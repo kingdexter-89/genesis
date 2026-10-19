@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="en">
+<!--begin::Head-->
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>appointments</title>
+
+  <!--begin::Theme Init (prevents flash of incorrect theme on load, #6043)-->
+  <script>
+    (() => {
+      'use strict';
+      const root = document.documentElement;
+
+      // Applications with their own theming opt out of AdminLTE's color mode
+      // entirely, here as well as in the bundle.
+      if (root.getAttribute('data-lte-color-mode') === 'off') {
+        return;
+      }
+
+      const STORAGE_KEY = 'lte-theme';
+      let stored = null;
+      try {
+        stored = localStorage.getItem(STORAGE_KEY);
+      } catch {
+        // localStorage may be unavailable (private mode, sandboxed iframe).
+      }
+      // Mirror the precedence in color-mode.ts: the visitor's stored choice
+      // wins, then a theme this page declared itself, then the OS preference.
+      const authored = root.getAttribute('data-bs-theme');
+      let resolved = 'light';
+      if (stored === 'dark' || stored === 'light') {
+        resolved = stored;
+      } else if (authored === 'dark' || authored === 'light') {
+        resolved = authored;
+      } else if (globalThis.matchMedia('(prefers-color-scheme: dark)').matches) {
+        resolved = 'dark';
+      }
+      root.setAttribute('data-bs-theme', resolved);
+      root.style.colorScheme = resolved;
+      // Flag values computed here, so the bundle does not mistake them for a
+      // theme the page declared and stop following the OS preference.
+      if (resolved !== authored) {
+        root.setAttribute('data-lte-theme-resolved', '');
+      }
+    })();
+  </script>
+  <!--end::Theme Init-->
+
+  <!--begin::Accessibility Meta Tags-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+  <!--end::Accessibility Meta Tags-->
+
+  <!--begin::Primary Meta Tags-->
+  <meta name="title" content="AdminLTE | Dashboard v2" />
+  <meta name="author" content="ColorlibHQ" />
+  <meta name="description"
+    content="AdminLTE is a free Bootstrap 5 admin dashboard template with almost 50 example pages, built with vanilla JS and designed with accessibility in mind." />
+  <meta name="keywords"
+    content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard, accessible admin panel" />
+  <!--end::Primary Meta Tags-->
+
+  <!--begin::Accessibility Features-->
+  <!-- Skip links will be dynamically added by accessibility.js -->
+  <meta name="supported-color-schemes" content="light dark" />
+  <link rel="preload" href="./css/adminlte.css" as="style" />
+  <!--end::Accessibility Features-->
+
+  <!--begin::Fonts-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
+    integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous" media="print"
+    onload="this.media = 'all'" />
+  <!--end::Fonts-->
+
+  <!--begin::Third Party Plugin(OverlayScrollbars)-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css"
+    crossorigin="anonymous" />
+  <!--end::Third Party Plugin(OverlayScrollbars)-->
+
+  <!--begin::Third Party Plugin(Bootstrap Icons)-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    crossorigin="anonymous" />
+  <!--end::Third Party Plugin(Bootstrap Icons)-->
+
+  <!--begin::Required Plugin(AdminLTE)-->
+  <link rel="stylesheet" href="./css/adminlte.css" />
+  <!--end::Required Plugin(AdminLTE)-->
+</head>
+
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+  <!--begin::App Wrapper-->
+  <div class="app-wrapper">
+    <!--begin::Header-->
+    <nav class="app-header navbar navbar-expand bg-body">
+      <!--begin::Container-->
+      <div class="container-fluid">
+        <!--begin::Start Navbar Links-->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button" aria-label="Toggle sidebar">
+              <i class="bi bi-list"></i>
+            </a>
+          </li>
+        </ul>
+        <!--end::Start Navbar Links-->
+
+        <!--begin::End Navbar Links-->
+        <ul class="navbar-nav ms-auto">
+          <!--begin::Search (small screens: the field above is hidden, so link to the search page)-->
+          <li class="nav-item d-md-none">
+            <a class="nav-link" href="./pages/search-results.html" aria-label="Search">
+              <i class="bi bi-search" aria-hidden="true"></i>
+            </a>
+          </li>
+          <!--end::Search-->
+
+          <!--begin::Language Menu-->
+          <!-- Markup only: swapping the locale is the application's job. The docs
+            Recipes page shows how to wire this to a real locale switch. -->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="#" id="language-menu" data-bs-toggle="dropdown" aria-expanded="false"
+              aria-label="Change language, current language English">
+              <i class="bi bi-translate" aria-hidden="true"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="language-menu">
+              <li>
+                <a class="dropdown-item active" href="#" hreflang="en" aria-current="true">
+                  English
+                  <i class="bi bi-check-lg ms-2" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li><a class="dropdown-item" href="#" hreflang="es">Español</a></li>
+              <li><a class="dropdown-item" href="#" hreflang="fr">Français</a></li>
+              <li><a class="dropdown-item" href="#" hreflang="de">Deutsch</a></li>
+              <li><a class="dropdown-item" href="#" hreflang="ar">العربية</a></li>
+            </ul>
+          </li>
+          <!--end::Language Menu-->
+
+          <!--begin::Fullscreen Toggle-->
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-lte-toggle="fullscreen" aria-label="Toggle fullscreen">
+              <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
+              <i data-lte-icon="minimize" class="bi bi-fullscreen-exit d-none"></i>
+            </a>
+          </li>
+          <!--end::Fullscreen Toggle-->
+
+          <!--begin::Color Mode Toggle (#6010)-->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="#" id="bd-theme" aria-label="Toggle color scheme" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <i class="bi bi-sun-fill" data-lte-theme-icon="light"></i>
+              <i class="bi bi-moon-fill d-none" data-lte-theme-icon="dark"></i>
+              <i class="bi bi-circle-half d-none" data-lte-theme-icon="auto"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme"
+              style="--bs-dropdown-min-width: 8rem">
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
+                  aria-pressed="false">
+                  <i class="bi bi-sun-fill me-2"></i>
+                  Light
+                  <i class="bi bi-check-lg ms-auto d-none"></i>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
+                  aria-pressed="false">
+                  <i class="bi bi-moon-fill me-2"></i>
+                  Dark
+                  <i class="bi bi-check-lg ms-auto d-none"></i>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"
+                  aria-pressed="true">
+                  <i class="bi bi-circle-half me-2"></i>
+                  Auto
+                  <i class="bi bi-check-lg ms-auto d-none"></i>
+                </button>
+              </li>
+            </ul>
+          </li>
+          <!--end::Color Mode Toggle-->
+
+        </ul>
+        <!--end::End Navbar Links-->
+      </div>
+      <!--end::Container-->
+    </nav>
+    <!--end::Header-->
+    <!--begin::Sidebar-->
+    <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+      <!--begin::Sidebar Brand-->
+      <div class="sidebar-brand">
+        <span class="brand-text fw-light">HOSPITAL</span>
+        <!--end::Brand Text-->
+        </a>
+        <!--end::Brand Link-->
+      </div>
+      <!--end::Sidebar Brand-->
+
+      <!--begin::Sidebar Wrapper-->
+      <div class="sidebar-wrapper">
+        <nav class="mt-2" aria-label="Main navigation">
+          <!--begin::Sidebar Menu-->
+          <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" data-accordion="false" id="navigation">
+            <li class="nav-item">
+              <a href="index2.html" class="nav-link">
+                <i class="nav-icon bi bi-file-earmark"></i>
+                <p>Starter Page</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="forms/advanced.php" class="nav-link">
+                <i class="nav-icon bi bi-pencil-square"></i>
+                <p>Scheduled Clients</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/appointments.proj/tables/editclient.php" class="nav-link">
+                <i class="nav-icon bi bi-pencil-square"></i>
+                <p>Edit Clients</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="tables/data.php" class="nav-link">
+                <i class="nav-icon bi bi-table"></i>
+                <p>Scheduled Attendants</p>
+              </a>
+            </li>
+          </ul>
+          <!--end::Sidebar Menu-->
+    </aside>
+    <!--end::Sidebar-->
+    <!--begin::App Main-->
+    <main class="app-main">
+      <!--begin::App Content Header-->
+      <div class="app-content-header">
+        <!--begin::Container-->
+        <div class="container-fluid">
+          <!--begin::Row-->
+          <div class="row">
+            <div class="col-sm-6">
+              <h1 class="mb-0 fs-3">Appointments</h1>
+            </div>
+            <div class="col-sm-6">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb float-sm-end">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Appointments</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+          <!--end::Row-->
+        </div>
+        <!--end::Container-->
+
+        <div class="col-md-6">
+          <!-- USERS LIST -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Add a client here.</h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" aria-label="Collapse card">
+                  <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                  <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-lte-toggle="card-remove" aria-label="Remove card">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+            </div>
+            <!--add members-->
+            <div class="row text-center m-1">
+              <form action="admin.php" method="post">
+                <table class="table table-striped table-hover">
+                  <tr>
+                    <td>NAME:</td>
+                    <td>
+                      <input type="email" class="form-control" id="exampleInputEmail1"
+                          aria-describedby="emailHelp"name="name" required placeholder="Eg: Genesis Laizer">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>EMAIL:</td>
+                    <td>
+                      <input type="email" class="form-control" id="exampleInputEmail1"
+                          aria-describedby="emailHelp" name="email" required placeholder="Eg: genesislaizer@gmail.com">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>PHONE NUMBER:</td>
+                    <td>
+                      <input type="tel" class="form-control" id="exampleInputEmail1"
+                          aria-describedby="emailHelp"name="phone" required placeholder="Eg: 076768750" maxlength="10">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>SERVICE:</td>
+                    <td>
+                      <!---
+                      <input type="text" name="service" required placeholder="Eg: Dental/Optical/Check Up">
+                      -->
+
+                      <select id="footer-color-modes" class="form-control" name="service" required
+                      aria-label="Single select with search">
+                        <option data-astro-cid-5q2uqagc value="">Choose a service</option>
+                        <option data-astro-cid-5q2uqagc value="Dental">Dental</option>
+                        <option data-astro-cid-5q2uqagc value="Physiotherapy">Physiotherapy</option>
+                        <option data-astro-cid-5q2uqagc value="Blood Test">Blood Test</option>
+                        <option data-astro-cid-5q2uqagc value="Check up">Check Up</option>
+                        <option data-astro-cid-5q2uqagc value="Optical">Optical</option>
+                        <option data-astro-cid-5q2uqagc value="Skin Care">Skin Care</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ATTENDANT:</td>
+                    <td>
+                      <select id="footer-color-modes" class="form-control" name="attendant" required
+                      aria-label="Single select with search">
+                        <option data-astro-cid-5q2uqagc value="">Attendants</option>
+                        <option data-astro-cid-5q2uqagc value="Robert">Robert</option>
+                        <option data-astro-cid-5q2uqagc value="John">John</option>
+                        <option data-astro-cid-5q2uqagc value="Abdul">Abdul</option>
+                        <option data-astro-cid-5q2uqagc value="Hakeem">Hakeem</option>
+                        <option data-astro-cid-5q2uqagc value="Jarwal">Jarwal</option>
+                        <option data-astro-cid-5q2uqagc value="Justin">Justin</option>
+                        <option data-astro-cid-5q2uqagc value="Justin">Angela</option>
+                        <option data-astro-cid-5q2uqagc value="Justin">Trisha</option>
+                        <option data-astro-cid-5q2uqagc value="Justin">Michelle</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr <tr>
+                    <td>WARD:</td>
+                    <td>
+                      <select id="footer-color-modes" class="form-control" name="ward" required
+                      aria-label="Single select with search">
+                        <option data-astro-cid-5q2uqagc value="">Attendants</option>
+                        <option data-astro-cid-5q2uqagc value="A1">A1</option>
+                        <option data-astro-cid-5q2uqagc value="A2">A2</option>
+                        <option data-astro-cid-5q2uqagc value="A3">A3</option>
+                        <option data-astro-cid-5q2uqagc value="A4">A4</option>
+                        <option data-astro-cid-5q2uqagc value="A5">A5</option>
+                        <option data-astro-cid-5q2uqagc value="B1">B1</option>
+                        <option data-astro-cid-5q2uqagc value="B2">B2</option>
+                        <option data-astro-cid-5q2uqagc value="B3">B3</option>
+                        <option data-astro-cid-5q2uqagc value="B4">B4</option>
+                        <option data-astro-cid-5q2uqagc value="B5">B5</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>TIME:</td>
+                    <td>
+                      <input type="datetime" class="form-control" id="exampleInputEmail1"
+                          aria-describedby="emailHelp" name="email" name="time" required placeholder="Eg: YY-MM-DD TT">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button class="btn btn-sm btn-outline-secondary" type="reset" name="clear">CLEAR</button>
+                      <button class="btn btn-sm btn-outline-secondary" type="submit" name="submit">SUBMIT</button>
+                    </td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+            <!--/add members-->
+          </div>
+          <!--end::Row-->
+
+        </div>
+        <!--end::App Wrapper-->
+        <!--begin::Script-->
+        <!--begin::Third Party Plugin(OverlayScrollbars)-->
+        <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
+          crossorigin="anonymous"></script>
+        <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+          crossorigin="anonymous"></script>
+        <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
+          crossorigin="anonymous"></script>
+        <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
+        <script src="./js/adminlte.js"></script>
+        <!--end::Required Plugin(AdminLTE)-->
+        <!--begin::OverlayScrollbars Configure-->
+        <script>
+          const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
+          const Default = {
+            scrollbarTheme: 'os-theme-light',
+            scrollbarAutoHide: 'leave',
+            scrollbarClickScroll: true,
+          };
+          document.addEventListener('DOMContentLoaded', function () {
+            const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+
+            // Disable OverlayScrollbars on mobile devices to prevent touch interference
+            const isMobile = window.innerWidth <= 992;
+
+            if (
+              sidebarWrapper &&
+              OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined &&
+              !isMobile
+            ) {
+              OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+                scrollbars: {
+                  theme: Default.scrollbarTheme,
+                  autoHide: Default.scrollbarAutoHide,
+                  clickScroll: Default.scrollbarClickScroll,
+                },
+              });
+            }
+          });
+        </script>
+        <!--end::OverlayScrollbars Configure-->
+
+        <!--begin::Color Mode Toggle-->
+        <!-- The light/dark/auto switcher ships in adminlte.js as the ColorMode
+     module (since 4.1) — no page script needed. Only the no-flash snippet
+     in <head> stays inline, because it must run before first paint. -->
+        <!--end::Color Mode Toggle-->
+
+        <!-- OPTIONAL SCRIPTS -->
+
+        <!-- Chart.js + AdminLTE chart theme -->
+        <!--begin::Third Party Plugin(Chart.js)-->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"
+          integrity="sha256-SERKgtTty1vsDxll+qzd4Y2cF9swY9BCq62i9wXJ9Uo=" crossorigin="anonymous"></script>
+        <!--end::Third Party Plugin(Chart.js)-->
+        <!--begin::Chart.js theme preset-->
+        <script>
+          // Styles every Chart.js chart on the page from AdminLTE's CSS variables —
+          // font, text, gridlines, tooltip and legend — and keeps them in step with the
+          // colour mode (ColorMode, the OS in auto mode, or your own code) and with
+          // `dir="rtl"`. Canvas can't read CSS, so the values are resolved here and
+          // re-applied to every chart whenever <html data-bs-theme> or dir changes.
+          (() => {
+            'use strict';
+            const { Chart } = globalThis;
+            if (!Chart) {
+              return;
+            }
+
+            const root = document.documentElement;
+            const cssVar = (name, fallback = '') =>
+              getComputedStyle(root).getPropertyValue(name).trim() || fallback;
+
+            // "#0d6efd" (or "#06f") + 0.3 -> "rgba(13, 110, 253, 0.3)"; anything else is returned as is.
+            const alpha = (color, opacity) => {
+              let hex = String(color).trim().replace(/^#/, '');
+              if (!/^[\da-f]{3}([\da-f]{3})?$/i.test(hex)) {
+                return color;
+              }
+
+              if (hex.length === 3) {
+                hex = [...hex].map((c) => c + c).join('');
+              }
+
+              const [r, g, b] = [0, 2, 4].map((i) => Number.parseInt(hex.slice(i, i + 2), 16));
+              return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+            };
+
+            // Scriptable backgroundColor for area charts: the line colour fading to transparent.
+            const areaFill =
+              (color, from = 0.35, to = 0) =>
+                (context) => {
+                  const { ctx, chartArea } = context.chart;
+                  if (!chartArea) {
+                    return alpha(color, from);
+                  }
+
+                  const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                  gradient.addColorStop(0, alpha(color, from));
+                  gradient.addColorStop(1, alpha(color, to));
+                  return gradient;
+                };
+
+            // The theme colours currently in Chart.defaults.
+            let applied = [];
+
+            const apply = () => {
+              const text = cssVar('--bs-secondary-color', '#6c757d');
+              const body = cssVar('--bs-body-color', '#212529');
+              const surface = cssVar('--bs-body-bg', '#fff');
+              const grid = `rgba(${cssVar('--bs-emphasis-color-rgb', '0, 0, 0')}, 0.08)`;
+              const rtl = root.getAttribute('dir') === 'rtl';
+              const d = Chart.defaults;
+              applied = [text, grid];
+
+              d.font.family = cssVar('--bs-body-font-family', d.font.family);
+              d.font.size = 12;
+              d.color = text;
+              d.borderColor = grid;
+              d.maintainAspectRatio = false;
+
+              d.scale.grid.color = grid;
+              d.scale.border.color = grid;
+              d.scale.ticks.padding = 8;
+              // Value axes float, category axes keep only their baseline.
+              d.set('scales.linear', { border: { display: false } });
+              d.set('scales.category', { grid: { display: false } });
+
+              d.elements.line.borderWidth = 2;
+              d.elements.point.radius = 0;
+              d.elements.point.hoverRadius = 5;
+              d.elements.point.hitRadius = 8;
+              d.elements.point.hoverBorderWidth = 2;
+              d.elements.point.borderColor = surface;
+              d.elements.bar.borderRadius = 4;
+              d.elements.arc.borderColor = surface;
+              d.elements.arc.borderWidth = 2;
+
+              const { legend, tooltip } = d.plugins;
+              legend.position = 'bottom';
+              legend.rtl = rtl;
+              Object.assign(legend.labels, {
+                color: body,
+                usePointStyle: true,
+                pointStyle: 'circle',
+                boxWidth: 8,
+                boxHeight: 8,
+                padding: 16,
+              });
+
+              Object.assign(tooltip, {
+                rtl,
+                backgroundColor: surface,
+                borderColor: cssVar('--bs-border-color', '#dee2e6'),
+                borderWidth: 1,
+                titleColor: cssVar('--bs-emphasis-color', '#000'),
+                bodyColor: body,
+                titleFont: { weight: '600' },
+                padding: 10,
+                cornerRadius: 6,
+                caretSize: 5,
+                boxPadding: 4,
+                usePointStyle: true,
+              });
+
+              // Line and bar charts share one tooltip per x value, like a dashboard should.
+              for (const type of ['line', 'bar']) {
+                Chart.overrides[type].interaction = { mode: 'index', intersect: false };
+              }
+            };
+
+            // Chart.js copies the scale defaults (tick, grid, border and title colours)
+            // into each chart's config when the chart is created, so new defaults alone
+            // never reach an existing chart's axes. Drop the copies that still hold the
+            // previous theme's colours; update() then copies the new ones in. Colours a
+            // chart set for itself are left alone.
+            const forgetThemeColors = (options, stale) => {
+              for (const [key, value] of Object.entries(options)) {
+                if (value && typeof value === 'object' && !Array.isArray(value)) {
+                  forgetThemeColors(value, stale);
+                } else if (/color$/i.test(key) && stale.includes(value)) {
+                  delete options[key];
+                }
+              }
+            };
+
+            const refresh = () => {
+              const stale = applied;
+              apply();
+              for (const chart of Object.values(Chart.instances)) {
+                forgetThemeColors(chart.config.options.scales || {}, stale);
+                chart.update('none');
+              }
+            };
+
+            apply();
+            new MutationObserver(refresh).observe(root, {
+              attributes: true,
+              attributeFilter: ['data-bs-theme', 'dir'],
+            });
+            // The web font may arrive after the first draw; redraw so labels use it.
+            document.fonts?.addEventListener('loadingdone', refresh);
+
+            // Helpers for the page's own chart code.
+            // eslint-disable-next-line unicorn/no-global-object-property-assignment
+            globalThis.lteChartTheme = { cssVar, alpha, areaFill, refresh };
+          })();
+        </script>
+        <!--end::Chart.js theme preset-->
+
+        <script>
+          // NOTICE!! DO NOT USE ANY OF THIS JAVASCRIPT
+          // IT'S ALL JUST JUNK FOR DEMO
+          // ++++++++++++++++++++++++++++++++++++++++++
+
+          /* Chart.js
+           * --------
+           * Here we will create a few charts using Chart.js
+           */
+
+          const { cssVar, areaFill } = globalThis.lteChartTheme;
+
+          //-----------------------
+          // - MONTHLY SALES CHART -
+          //-----------------------
+
+          new Chart(document.querySelector('#sales-chart'), {
+            type: 'line',
+            data: {
+              labels: ["Jan '23", "Feb '23", "Mar '23", "Apr '23", "May '23", "Jun '23", "Jul '23"],
+              datasets: [
+                {
+                  label: 'Digital Goods',
+                  data: [28, 48, 40, 19, 86, 27, 90],
+                  borderColor: '#0d6efd',
+                  backgroundColor: areaFill('#0d6efd'),
+                  pointBackgroundColor: '#0d6efd',
+                  fill: true,
+                  tension: 0.4,
+                },
+                {
+                  label: 'Electronics',
+                  data: [65, 59, 80, 81, 56, 55, 40],
+                  borderColor: '#20c997',
+                  backgroundColor: areaFill('#20c997'),
+                  pointBackgroundColor: '#20c997',
+                  fill: true,
+                  tension: 0.4,
+                },
+              ],
+            },
+            options: {
+              plugins: {
+                legend: {
+                  display: false,
+                },
+                tooltip: {
+                  callbacks: {
+                    title: ([item]) =>
+                      `${new Date(2023, item.dataIndex).toLocaleString('en', { month: 'long' })} 2023`,
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                },
+              },
+            },
+          });
+
+          //---------------------------
+          // - END MONTHLY SALES CHART -
+          //---------------------------
+
+          function createSparklineChart(selector, data) {
+            const primary = cssVar('--bs-primary', '#0d6efd');
+
+            return new Chart(document.querySelector(selector), {
+              type: 'line',
+              data: {
+                labels: data.map((value, index) => index + 1),
+                datasets: [
+                  {
+                    data,
+                    borderColor: primary,
+                    backgroundColor: primary,
+                    pointHoverRadius: 3,
+                  },
+                ],
+              },
+              options: {
+                layout: {
+                  padding: 3,
+                },
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                  tooltip: {
+                    displayColors: false,
+                    padding: 6,
+                    callbacks: {
+                      title: () => '',
+                    },
+                  },
+                },
+                scales: {
+                  x: {
+                    display: false,
+                  },
+                  y: {
+                    display: false,
+                  },
+                },
+              },
+            });
+          }
+
+          const table_sparkline_1_data = [25, 66, 41, 89, 63, 25, 44, 12, 36, 9, 54];
+          const table_sparkline_2_data = [12, 56, 21, 39, 73, 45, 64, 52, 36, 59, 44];
+          const table_sparkline_3_data = [15, 46, 21, 59, 33, 15, 34, 42, 56, 19, 64];
+          const table_sparkline_4_data = [30, 56, 31, 69, 43, 35, 24, 32, 46, 29, 64];
+          const table_sparkline_5_data = [20, 76, 51, 79, 53, 35, 54, 22, 36, 49, 64];
+          const table_sparkline_6_data = [5, 36, 11, 69, 23, 15, 14, 42, 26, 19, 44];
+          const table_sparkline_7_data = [12, 56, 21, 39, 73, 45, 64, 52, 36, 59, 74];
+
+          createSparklineChart('#table-sparkline-1', table_sparkline_1_data);
+          createSparklineChart('#table-sparkline-2', table_sparkline_2_data);
+          createSparklineChart('#table-sparkline-3', table_sparkline_3_data);
+          createSparklineChart('#table-sparkline-4', table_sparkline_4_data);
+          createSparklineChart('#table-sparkline-5', table_sparkline_5_data);
+          createSparklineChart('#table-sparkline-6', table_sparkline_6_data);
+          createSparklineChart('#table-sparkline-7', table_sparkline_7_data);
+
+          //-------------
+          // - PIE CHART -
+          //-------------
+
+          new Chart(document.querySelector('#pie-chart'), {
+            type: 'doughnut',
+            data: {
+              labels: ['Chrome', 'Edge', 'FireFox', 'Safari', 'Opera', 'IE'],
+              datasets: [
+                {
+                  label: 'Users',
+                  data: [700, 500, 400, 600, 300, 100],
+                  backgroundColor: ['#0d6efd', '#20c997', '#ffc107', '#d63384', '#6f42c1', '#adb5bd'],
+                },
+              ],
+            },
+            options: {
+              cutout: '65%',
+              plugins: {
+                legend: {
+                  position: 'right',
+                },
+              },
+            },
+          });
+
+          //-----------------
+          // - END PIE CHART -
+          //-----------------
+        </script>
+        <!--end::Script-->
+</body>
+<!--end::Body-->
+
+</html>
