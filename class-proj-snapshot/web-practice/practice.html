@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>project</title>
+          <link rel="stylesheet" href="style.css">
+          <script>
+                    function changeText() {
+                              document.getElementById('details').style.color = 'red';
+                              document.getElementById('details').style.backgroundColor = 'white';
+                              document.getElementsByClassName('header')[0].style.color = 'red';
+                              document.getElementsByClassName('header')[0].style.backgroundColor = 'white';
+                              document.write("<h1>HELLO WORLD</h1>"); //clears the whole page and writes the new text
+                              window.alert("Wagwan"); //creates a pop up alert box in inspect window for a website, using "console.log" you can print out messages to the console for debugging purposes.It helps developers track the flow of their code and identify issues.Also, all js codes can be written in the console window of the inspect window including math operations, variable declarations, and function calls. It is a powerful tool for testing and debugging JavaScript code in real - time.
+                              window.print(''); //opens the print dialog box to print the current page
+                              let name = prompt("Enter your name:"); //creates a pop up box to enter text
+                              if (name) { genesis = name; } else { genesis = "GENESIS ERNEST LAIZER"; }
+                              document.getElementById('details').innerHTML = "My name is " + genesis + ", i'm the best";
+                              let x = 1;
+                              const fname = "genesis";
+                              document.getElementById('details').innerHTML = "My name is " + fname + " in year " + x + ", i'm the best";
+                    }
+          </script>
+</head>
+
+<body id="body">
+          <div class="container" id="container">
+                    <div class="header"><u>GENESIS ERNEST LAIZER</u></div>
+                    <hr>
+                    <div class="main">
+                              <div class="img" id="img">
+                                        <img
+                                                  src="C:\Users\hp\Pictures\Saved Pictures\aa410e2b-323c-4346-aa79-56bc794ac441-1_all_494.png">
+                              </div>
+                              <div class="details" id="details">
+                                        My name is GENESIS, i study computer engineering at D.I.T. I am a first year. So
+                                        far
+                                        everything has been good and i'm enjoying it so far. Currently i am doing my
+                                        field work
+                                        here at D.I.T, It's called WEB DESIGN
+                              </div>
+                    </div>
+          </div>
+          <button type="button" onclick="changeText()">Change Text</button>
+
+
+          <button type="button" onclick="document.getElementById('details').innerHTML = 'None of your business'">Change
+                    Text
+          </button>
+
+          <button type="button"
+                    onclick="document.getElementById('img').getElementsByTagName('img')[0].src = 'C:\\Users\\hp\\Pictures\\Saved Pictures\\minimalist-blue-white-wave-background_1017-46756.jpg'">Change
+                    Image1</button>
+
+          <button type="button"
+                    onclick="document.getElementById('img').getElementsByTagName('img')[0].src = 'C:\\Users\\hp\\Pictures\\Saved Pictures\\black-paper-background.webp'">Change
+                    Image2</button>
+
+          <button type="button" onclick="document.getElementById('body').style.backgroundColor='red'"> Change
+                    Background</button>
+
+</body>
+
+
+
+</html>
